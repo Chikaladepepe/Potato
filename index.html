@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Jai</title>
+    <title>Buksanmopo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --cream: #fdfaf5;
-            --dark-purple: linear-gradient(135deg, #1a0b2e 0%, #4b2c71 100%);
+            --grad-light: linear-gradient(135deg, #f5f0ff 0%, #e0d4ff 100%);
+            --grad-deep: linear-gradient(135deg, #1a0b2e 0%, #4b2c71 100%);
             --accent-pink: #ff85a2;
             --tulip-purple: #9b6cc3;
-            --glass: rgba(255, 255, 255, 0.05);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--cream);
+            background: var(--grad-light);
             transition: background 1.5s ease;
             overflow: hidden;
             display: flex;
@@ -28,16 +27,48 @@
             color: #333;
         }
 
+        /* LOADING SCREEN */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--grad-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 1s ease;
+        }
+
+        .loading-text { font-size: 1.2rem; font-weight: 300; margin-bottom: 20px; color: #6a49a1; }
+        
+        .progress-container {
+            width: 250px;
+            height: 6px;
+            background: rgba(106, 73, 161, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--accent-pink);
+            animation: grow 8s linear forwards;
+        }
+
+        @keyframes grow { to { width: 100%; } }
+
+        /* MAIN UI */
         .container {
             width: 100%;
             height: 100%;
-            display: flex;
+            display: none; /* Hidden until loaded */
             justify-content: center;
             align-items: center;
             z-index: 10;
         }
 
-        /* Stages */
         .step {
             display: none;
             width: 90%;
@@ -48,7 +79,6 @@
 
         .active { display: block; }
 
-        /* Step 5 Letter Container (Full Space) */
         .full-letter-step {
             display: none;
             width: 100%;
@@ -57,15 +87,14 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
             animation: fadeIn 2s ease-in forwards;
         }
 
-        h1 { font-size: 2rem; margin-bottom: 20px; font-weight: 600; color: var(--accent-pink); }
-        p { font-size: 1.15rem; line-height: 1.8; font-weight: 300; margin-bottom: 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 20px; font-weight: 600; color: #6a49a1; }
+        p { font-size: 1.15rem; line-height: 1.8; font-weight: 400; margin-bottom: 20px; }
 
-        /* Animated Buttons */
         button {
             padding: 16px 45px;
             border-radius: 50px;
@@ -75,54 +104,45 @@
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.3s;
             box-shadow: 0 10px 20px rgba(255, 133, 162, 0.3);
             animation: pulse 2.5s infinite;
         }
 
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 30px rgba(255, 133, 162, 0.5);
-        }
-
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+            50% { transform: scale(1.04); }
             100% { transform: scale(1); }
         }
 
-        /* Aesthetic Styles */
         .letter-scroll {
             width: 100%;
-            max-width: 700px;
-            max-height: 80vh;
+            max-width: 750px;
+            max-height: 85vh;
             overflow-y: auto;
             text-align: center;
             padding: 20px;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none; 
         }
-        .letter-scroll::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        .letter-scroll::-webkit-scrollbar { display: none; } 
 
         .highlight { color: var(--accent-pink); font-weight: 600; }
 
         .footer-note {
-            margin-top: 30px;
+            margin-top: 40px;
             font-weight: 600;
             color: var(--accent-pink);
             font-size: 1.1rem;
-            text-shadow: 0 0 10px rgba(255, 133, 162, 0.5);
         }
 
         .aesthetic-gif {
-            width: 150px;
-            height: 150px;
+            width: 160px; height: 160px;
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 4px solid white;
         }
 
-        /* Falling Tulips */
         #tulipContainer {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -154,19 +174,25 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Utility */
-        .dark-mode-text { color: #fff !important; }
-        .instruction { font-size: 0.9rem; color: #888; font-style: italic; margin-bottom: 25px; }
+        .instruction { font-size: 0.9rem; color: #7b62a3; font-style: italic; margin-bottom: 25px; }
+        .white-text { color: #ffffff !important; }
 
     </style>
 </head>
-<body>
+<body onload="startLoading()">
+
+    <!-- STAGE 0: LOADING -->
+    <div id="loader">
+        <p class="loading-text">Loading something for you</p>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
 
     <div id="tulipContainer"></div>
 
-    <div class="container" id="container">
+    <div class="container" id="mainContainer">
         
-        <!-- STEP 1: Welcome -->
         <div class="step active" id="step1">
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnB4bmxidm16bmxueXptZHFoZ3B4Y2R4dzR4Y2Z4dzR4Y2Z4dzR4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/ICOgUNoMPvGCI/giphy.gif" class="aesthetic-gif">
             <h1>Welcome</h1>
@@ -174,7 +200,6 @@
             <button onclick="nextStep(2)">Continue</button>
         </div>
 
-        <!-- STEP 2: Q1 -->
         <div class="step" id="step2">
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZleXptZHFoZ3B4Y2R4dzR4Y2Z4dzR4Y2Z4dzR4Y2Z4dzR4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/C9x0nrDQ74BXLYId6W/giphy.gif" class="aesthetic-gif">
             <h1>Question 1</h1>
@@ -183,7 +208,6 @@
             <button onclick="nextStep(3)">Next</button>
         </div>
 
-        <!-- STEP 3: Q2 -->
         <div class="step" id="step3">
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHY5bTlkYjV5bmx1eXptZHFoZ3B4Y2R4dzR4Y2Z4dzR4Y2Z4dzR4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/vFKqnCdLPNOKc/giphy.gif" class="aesthetic-gif">
             <h1>Question 2</h1>
@@ -192,16 +216,14 @@
             <button onclick="nextStep(4)">Finish</button>
         </div>
 
-        <!-- STEP 4: The Pivot -->
         <div class="step" id="step4">
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHY5bTlkYjV5bmx1eXptZHFoZ3B4Y2R4dzR4Y2Z4dzR4Y2Z4dzR4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/unQ3IJU2RG7PEPN9qh/giphy.gif" class="aesthetic-gif">
             <p>Just kidding that wasn't my main target here although you can answer those through dms</p>
             <button onclick="startFinalStage()">Continue</button>
         </div>
 
-        <!-- STEP 5: THE LETTER (FULL SPACE) -->
         <div class="full-letter-step" id="step5">
-            <div class="letter-scroll dark-mode-text">
+            <div class="letter-scroll white-text">
                 <p>Hello Jai I saw some things that made me realize I have not been clear enough with you. I want you to understand that what I feel is not just some temporary infatuation. To me love is a choice and a commitment that goes beyond just a feeling. I have made the choice to love you and nothing is going to change my mind about that because you are worth every second of my time and effort.</p>
                 
                 <p>Regarding what I saw earlier please know that you are <span class="highlight">breathtaking</span>. If I have not posted you it was never because I was hesitant about how you look. I just wanted to respect your space and your privacy until we were both ready. You are so beautiful and I would be proud to show you off to the whole world every single day. I love everything about you from the way you talk to the way you stay on the line with me even when we are just sitting in silence.</p>
@@ -210,35 +232,35 @@
                 
                 <p>I do not want you to be confused about us anymore. I am all in and I want you to be my <span class="highlight">girlfriend</span>.</p>
                 
-                <div class="footer-note">
-                    Tell me your answer through dms Diko kase makikita dito eh
-                </div>
+                <div class="footer-note">Tell me your answer through dms Diko kase makikita dito eh</div>
             </div>
         </div>
 
     </div>
 
     <script>
+        function startLoading() {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('mainContainer').style.display = 'flex';
+                }, 1000);
+            }, 8000); // 8 Seconds
+        }
+
         function nextStep(stepNum) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step' + stepNum).classList.add('active');
         }
 
         function startFinalStage() {
-            // Background change
             document.body.style.background = "linear-gradient(135deg, #1a0b2e 0%, #4b2c71 100%)";
-            
-            // Hide previous step
             document.getElementById('step4').classList.remove('active');
-            
-            // Show tulips
             const tulipContainer = document.getElementById('tulipContainer');
             tulipContainer.style.display = 'block';
             createTulips();
-
-            // Show full letter
-            const step5 = document.getElementById('step5');
-            step5.style.display = 'flex';
+            document.getElementById('step5').style.display = 'flex';
         }
 
         function createTulips() {
@@ -254,4 +276,4 @@
         }
     </script>
 </body>
-</html>
+</html> 
