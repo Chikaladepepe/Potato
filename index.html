@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buksanmopls</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #fdfaf5;
+            --dark: #0a0a0a;
+            --accent-pink: #ff85a2;
+            --tulip-purple: #9b6cc3;
+            --text-dark: #333;
+            --text-light: #f0f0f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--text-dark);
+            transition: background-color 1.5s ease, color 1.5s ease;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Stages */
+        .step {
+            display: none;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .active {
+            display: block;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--accent-pink);
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .instruction {
+            font-size: 0.85rem;
+            color: #888;
+            font-style: italic;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 35px;
+            border-radius: 50px;
+            border: none;
+            background-color: var(--accent-pink);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 133, 162, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Letter View */
+        .letter-content {
+            text-align: left;
+            max-height: 450px;
+            overflow-y: auto;
+            padding-right: 15px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-pink) transparent;
+        }
+
+        .letter-content::-webkit-scrollbar { width: 4px; }
+        .letter-content::-webkit-scrollbar-thumb { background: var(--accent-pink); border-radius: 10px; }
+
+        .highlight {
+            color: var(--accent-pink);
+            font-weight: 600;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            font-weight: 600;
+            color: var(--accent-pink);
+            text-align: center;
+        }
+
+        /* GIF Styling */
+        .aesthetic-gif {
+            width: 180px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Falling Tulips */
+        #tulipContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            display: none;
+        }
+
+        .tulip {
+            position: absolute;
+            width: 20px;
+            height: 25px;
+            background-color: var(--tulip-purple);
+            border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+            animation: fall linear infinite;
+        }
+
+        .tulip::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 15px;
+            background: #4a7c44;
+            top: 24px;
+            left: 9px;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background-color: var(--dark);
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="tulipContainer"></div>
+
+    <div class="container">
+        
+        <!-- STEP 1: Welcome -->
+        <div class="step active" id="step1">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnB4bmxidm16bmxueXptZHFoZ3B4Y2R4dzR4Y2Z4dzR4Y2Z4dzR4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/ICOgUNoMPvGCI/giphy.gif" class="aesthetic-gif">
+            <h1>Welcome</h1>
+            <p>I will just run a few questions for you</p>
+            <button onclick="nextStep(2)">Continue</button>
+        </div>
+
+        <!-- STEP 2: Q1 -->
+        <div class="step" id="step2">
+            <h1>Question 1</h1>
+            <p>How do you want to be loved?</p>
+            <p class="instruction">you do not have to type it here just remember your answer and tell me through dms later</p>
+            <button onclick="nextStep(3)">Next</button>
+        </div>
+
+        <!-- STEP 3: Q2 -->
+        <div class="step" id="step3">
+            <h1>Question 2</h1>
+            <p>What is your favorite love language?</p>
+            <p class="instruction">you do not have to type it here just remember your answer and tell me through dms later</p>
+            <button onclick="nextStep(4)">Finish</button>
+        </div>
+
+        <!-- STEP 4: The Pivot -->
+        <div class="step" id="step4">
+            <p>Just kidding that wasn't my main target here although you can answer those through dms</p>
+            <button onclick="startLetter()">Continue</button>
+        </div>
+
+        <!-- STEP 5: The Final Letter -->
+        <div class="step" id="step5">
+            <div class="letter-content">
+                <p>Hello Jai I saw some things that made me realize I have not been clear enough with you. I want you to understand that what I feel is not just some temporary infatuation. To me love is a choice and a commitment that goes beyond just a feeling. I have made the choice to love you and nothing is going to change my mind about that.</p>
+                
+                <p>Regarding what I saw please know that you are <span class="highlight">breathtaking</span>. If I have not posted you it was never because I was hesitant about how you look. I just wanted to respect your space and your privacy. You are beautiful and I would be proud to show you off to the whole world.</p>
+                
+                <p>We are still young I know so please take a step back and think because I have made my mind and I want you to do the same. It does not matter how long I have to wait for your answer. I just want to make it clear that I want you. If you are in then I am in too.</p>
+                
+                <p>I do not want you to be confused about us anymore. I am all in and I want you to be my girlfriend.</p>
+            </div>
+            
+            <div class="footer-note">
+                Tell me your answer through dms Diko kase makikita dito eh
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function nextStep(stepNum) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + stepNum).classList.add('active');
+        }
+
+        function startLetter() {
+            // Change UI to Dark Mode
+            document.body.classList.add('dark-mode');
+            
+            // Show Tulips
+            const tulipContainer = document.getElementById('tulipContainer');
+            tulipContainer.style.display = 'block';
+            createTulips();
+
+            // Show Letter
+            nextStep(5);
+        }
+
+        function createTulips() {
+            const container = document.getElementById('tulipContainer');
+            for (let i = 0; i < 30; i++) {
+                let tulip = document.createElement('div');
+                tulip.className = 'tulip';
+                tulip.style.left = Math.random() * 100 + 'vw';
+                tulip.style.animationDuration = Math.random() * 3 + 4 + 's';
+                tulip.style.animationDelay = Math.random() * 5 + 's';
+                tulip.style.opacity = Math.random();
+                container.appendChild(tulip);
+            }
+        }
+    </script>
+</body>
+  </html>
