@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buksanmopls</title>
-    <!-- Google Fonts -->
+    <title>For Jai</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,11 +15,7 @@
             --text-light: #f0f0f0;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -42,115 +37,96 @@
             z-index: 10;
         }
 
-        /* Stages */
-        .step {
-            display: none;
-            animation: fadeIn 1s ease forwards;
-        }
+        .step { display: none; animation: fadeIn 0.8s ease-out forwards; }
+        .active { display: block; }
 
-        .active {
-            display: block;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            font-weight: 600;
-            color: var(--accent-pink);
-        }
-
-        p {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            font-weight: 300;
-            margin-bottom: 20px;
-        }
+        h1 { font-size: 1.8rem; margin-bottom: 20px; font-weight: 600; color: var(--accent-pink); }
+        p { font-size: 1.1rem; line-height: 1.7; font-weight: 300; margin-bottom: 20px; }
 
         .instruction {
             font-size: 0.85rem;
             color: #888;
             font-style: italic;
             margin-top: -10px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
+        /* Animated Buttons */
         button {
-            padding: 12px 35px;
+            padding: 14px 40px;
             border-radius: 50px;
             border: none;
             background-color: var(--accent-pink);
             color: white;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 133, 162, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(255, 133, 162, 0.3);
+            animation: pulse 2s infinite;
         }
 
         button:hover {
-            transform: translateY(-2px);
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 133, 162, 0.5);
         }
 
-        /* Letter View */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 133, 162, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 133, 162, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 133, 162, 0); }
+        }
+
+        /* Centered Letter View */
         .letter-content {
-            text-align: left;
-            max-height: 450px;
+            text-align: center;
+            max-height: 480px;
             overflow-y: auto;
-            padding-right: 15px;
+            padding: 0 15px;
             scrollbar-width: thin;
             scrollbar-color: var(--accent-pink) transparent;
         }
 
-        .letter-content::-webkit-scrollbar { width: 4px; }
+        .letter-content::-webkit-scrollbar { width: 3px; }
         .letter-content::-webkit-scrollbar-thumb { background: var(--accent-pink); border-radius: 10px; }
 
-        .highlight {
-            color: var(--accent-pink);
-            font-weight: 600;
-        }
+        .highlight { color: var(--accent-pink); font-weight: 600; }
 
         .footer-note {
             margin-top: 30px;
             font-weight: 600;
             color: var(--accent-pink);
-            text-align: center;
+            font-size: 1rem;
         }
 
-        /* GIF Styling */
+        /* Aesthetic GIFs */
         .aesthetic-gif {
-            width: 180px;
-            border-radius: 20px;
-            margin-bottom: 20px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
 
         /* Falling Tulips */
         #tulipContainer {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            display: none;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1; display: none;
         }
 
         .tulip {
             position: absolute;
-            width: 20px;
-            height: 25px;
+            width: 18px; height: 22px;
             background-color: var(--tulip-purple);
             border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
             animation: fall linear infinite;
         }
 
-        .tulip::before {
-            content: '';
-            position: absolute;
-            width: 2px;
-            height: 15px;
-            background: #4a7c44;
-            top: 24px;
-            left: 9px;
+        .tulip::after {
+            content: ''; position: absolute;
+            width: 2px; height: 12px;
+            background: #4a7c44; top: 21px; left: 8px;
         }
 
         @keyframes fall {
@@ -160,15 +136,11 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Dark Mode */
-        body.dark-mode {
-            background-color: var(--dark);
-            color: var(--text-light);
-        }
+        body.dark-mode { background-color: var(--dark); color: var(--text-light); }
     </style>
 </head>
 <body>
@@ -187,6 +159,7 @@
 
         <!-- STEP 2: Q1 -->
         <div class="step" id="step2">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZleXptZHFoZ3B4Y2R4dzR4Y2Z4dzR4Y2Z4dzR4Y2Z4dzR4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/C9x0nrDQ74BXLYId6W/giphy.gif" class="aesthetic-gif">
             <h1>Question 1</h1>
             <p>How do you want to be loved?</p>
             <p class="instruction">you do not have to type it here just remember your answer and tell me through dms later</p>
@@ -195,6 +168,7 @@
 
         <!-- STEP 3: Q2 -->
         <div class="step" id="step3">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHY5bTlkYjV5bmx1eXptZHFoZ3B4Y2R4dzR4Y2Z4dzR4Y2Z4dzR4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/vFKqnCdLPNOKc/giphy.gif" class="aesthetic-gif">
             <h1>Question 2</h1>
             <p>What is your favorite love language?</p>
             <p class="instruction">you do not have to type it here just remember your answer and tell me through dms later</p>
@@ -203,6 +177,7 @@
 
         <!-- STEP 4: The Pivot -->
         <div class="step" id="step4">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHY5bTlkYjV5bmx1eXptZHFoZ3B4Y2R4dzR4Y2Z4dzR4Y2Z4dzR4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/unQ3IJU2RG7PEPN9qh/giphy.gif" class="aesthetic-gif">
             <p>Just kidding that wasn't my main target here although you can answer those through dms</p>
             <button onclick="startLetter()">Continue</button>
         </div>
@@ -210,11 +185,11 @@
         <!-- STEP 5: The Final Letter -->
         <div class="step" id="step5">
             <div class="letter-content">
-                <p>Hello Jai I saw some things that made me realize I have not been clear enough with you. I want you to understand that what I feel is not just some temporary infatuation. To me love is a choice and a commitment that goes beyond just a feeling. I have made the choice to love you and nothing is going to change my mind about that.</p>
+                <p>Hello Jai I saw some things that made me realize I have not been clear enough with you. I want you to understand that what I feel is not just some temporary infatuation. To me love is a choice and a commitment that goes beyond just a feeling. I have made the choice to love you and nothing is going to change my mind about that because you are worth every second of my time and effort.</p>
                 
-                <p>Regarding what I saw please know that you are <span class="highlight">breathtaking</span>. If I have not posted you it was never because I was hesitant about how you look. I just wanted to respect your space and your privacy. You are beautiful and I would be proud to show you off to the whole world.</p>
+                <p>Regarding what I saw earlier please know that you are <span class="highlight">breathtaking</span>. If I have not posted you it was never because I was hesitant about how you look. I just wanted to respect your space and your privacy until we were both ready. You are so beautiful and I would be proud to show you off to the whole world every single day. I love everything about you from the way you talk to the way you stay on the line with me even when we are just sitting in silence.</p>
                 
-                <p>We are still young I know so please take a step back and think because I have made my mind and I want you to do the same. It does not matter how long I have to wait for your answer. I just want to make it clear that I want you. If you are in then I am in too.</p>
+                <p>We are still young I know so please take a step back and think because I have made my mind and I want you to do the same. It does not matter how long I have to wait for your answer because my feelings are not going anywhere. I just want to make it clear that I want you and I am all in for the long term. If you are in then I am in too.</p>
                 
                 <p>I do not want you to be confused about us anymore. I am all in and I want you to be my girlfriend.</p>
             </div>
@@ -233,30 +208,24 @@
         }
 
         function startLetter() {
-            // Change UI to Dark Mode
             document.body.classList.add('dark-mode');
-            
-            // Show Tulips
             const tulipContainer = document.getElementById('tulipContainer');
             tulipContainer.style.display = 'block';
             createTulips();
-
-            // Show Letter
             nextStep(5);
         }
 
         function createTulips() {
             const container = document.getElementById('tulipContainer');
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 35; i++) {
                 let tulip = document.createElement('div');
                 tulip.className = 'tulip';
                 tulip.style.left = Math.random() * 100 + 'vw';
                 tulip.style.animationDuration = Math.random() * 3 + 4 + 's';
                 tulip.style.animationDelay = Math.random() * 5 + 's';
-                tulip.style.opacity = Math.random();
                 container.appendChild(tulip);
             }
         }
     </script>
 </body>
-  </html>
+</html> 
